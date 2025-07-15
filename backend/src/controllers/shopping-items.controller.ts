@@ -55,7 +55,7 @@ export class ShoppingItemsController {
       throw new BadRequestError();
     }
 
-    const result = await this.service.add(body);
+    const result = await this.service.create(body);
     const response: APIResponse<ShoppingItem> = { data: result };
 
     res.json(response);

@@ -6,14 +6,14 @@ import { Pagination, PaginationQuery } from "../types/pagination";
 import { InternalServerError, NotFoundError } from "../errors";
 
 export interface ShoppingItemsService {
-  add(shoppingItem: ShoppingItemCreate): Promise<ShoppingItem>;
+  create(shoppingItem: ShoppingItemCreate): Promise<ShoppingItem>;
   get(pagination?: PaginationQuery): Promise<Pagination<ShoppingItem>>;
   getOne(id: number): Promise<ShoppingItem>;
   delete(id: number): Promise<void>;
 }
 
 export class ShoppingItemsServiceDrizzle implements ShoppingItemsService {
-  async add(shoppingItem: ShoppingItemCreate): Promise<ShoppingItem> {
+  async create(shoppingItem: ShoppingItemCreate): Promise<ShoppingItem> {
     const inserted = await db.insert(shoppingItemTable).values(shoppingItem);
 
     if (!inserted.lastInsertRowid) {
