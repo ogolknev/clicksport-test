@@ -1,26 +1,27 @@
 import { count, eq } from "drizzle-orm";
 import db from "../config/db";
 import { shoppingItemTable } from "../config/db/schema";
-import { ShoppingItem } from "../types/shooping-item";
+import { ShoppingItem, ShoppingItemCreate } from "../models/shoping-item";
 import { Pagination, PaginationQuery } from "../types/pagination";
+import { InternalServerError, NotFoundError } from "../errors";
 
 export interface ShoppingItemsService {
-  add(shoppingItem: ShoppingItem): Promise<ShoppingItem>;
+  add(shoppingItem: ShoppingItemCreate): Promise<ShoppingItem>;
   get(pagination?: PaginationQuery): Promise<Pagination<ShoppingItem>>;
-  getOne(id: NonNullable<ShoppingItem["id"]>): Promise<ShoppingItem>;
-  delete(id: NonNullable<ShoppingItem["id"]>): Promise<void>;
+  getOne(id: number): Promise<ShoppingItem>;
+  delete(id: number): Promise<void>;
 }
 
 export class ShoppingItemsServiceDrizzle implements ShoppingItemsService {
-  async add(shoppingItem: ShoppingItem): Promise<ShoppingItem> {
+  async add(shoppingItem: ShoppingItemCreate): Promise<ShoppingItem> {
     const inserted = await db.insert(shoppingItemTable).values(shoppingItem);
 
     if (!inserted.lastInsertRowid) {
-      throw new Error("Insert shopping item failed");
+      throw new InternalServerError();
     }
 
     if (inserted.lastInsertRowid > BigInt(Number.MAX_SAFE_INTEGER)) {
-      throw new Error("inserted.lastInsertRowid > MAX_SAFE_INTEGER");
+      throw new InternalServerError("inserted.lastInsertRowid > MAX_SAFE_INTEGER");
     }
     const id = Number(inserted.lastInsertRowid);
 
@@ -29,7 +30,7 @@ export class ShoppingItemsServiceDrizzle implements ShoppingItemsService {
       .from(shoppingItemTable)
       .where(eq(shoppingItemTable.id, id));
 
-    if (!item) throw new Error("Inserted item not found");
+    if (!item) throw new InternalServerError("Inserted item not found");
 
     return item;
   }
@@ -62,7 +63,7 @@ export class ShoppingItemsServiceDrizzle implements ShoppingItemsService {
       .from(shoppingItemTable)
       .where(eq(shoppingItemTable.id, id));
 
-    if (!item) throw new Error("Shopping item not found");
+    if (!item) throw new NotFoundError();
 
     return item;
   }
@@ -72,7 +73,7 @@ export class ShoppingItemsServiceDrizzle implements ShoppingItemsService {
       .where(eq(shoppingItemTable.id, id));
 
     if (!deleted.rowsAffected) {
-      throw new Error("Failed delete shopping item");
+      throw new NotFoundError("Shopping item to delete not found");
     }
   }
 }
