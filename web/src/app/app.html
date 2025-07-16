@@ -1,7 +1,7 @@
 <header class="header">Shopping List</header>
 
 <main class="main">
-  <form [formGroup]="shoppingItemForm" class="form">
+  <form [formGroup]="shoppingItemForm" class="form" (ngSubmit)="onSubmit()" >
     <input id="name" formControlName="name" placeholder="Name" />
     <input
       id="description"
@@ -19,12 +19,34 @@
     <button type="submit">Add</button>
   </form>
 
-  @for (item of items(); track item.id) {
-  <div>
-    {{ item.name }}
-    {{ item.createdAt }}
+  <div class="item-card-container">
+    @for (item of items(); track item.id) {
+    <div class="item-card">
+      <span class="label">Name: </span>
+      <span>{{ item.name }}</span>
+
+      <button class="delete" (click)="onDelete(item.id)">Delete</button>
+
+      <span class="label">Description: </span>
+      <span>{{ item.description }}</span>
+
+      <span class="label">Price: </span>
+      <span
+        >{{ item.price / 100 | number : "1.2-2" }}
+        {{ item.currency | currencySymbol }}</span
+      >
+
+      <span class="label">Name: </span>
+      <span>{{ item.name }}</span>
+
+      <div class="datetime-container">
+        <span class="datetime">{{ item.createdAt }}</span>
+      </div>
+    </div>
+    }
   </div>
-  }
+
+  <div class="pagination"></div>
 </main>
 
 <router-outlet />

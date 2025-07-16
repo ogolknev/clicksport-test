@@ -292,13 +292,26 @@ button {
   outline-offset: -1px;
   border: none;
   border-radius: 0.5rem;
+  cursor: pointer;
+
+  &.delete {
+    background-color: var(--color-rose-500);
+  }
 }
 
 button:focus {
   outline: 2px solid var(--color-emerald-500);
   outline-offset: 1px;
+
+  &.delete {
+    outline: 2px solid var(--color-rose-500);
+  }
 }
 
 button:hover {
   background-color: var(--color-emerald-700);
+
+  &.delete {
+    background-color: var(--color-rose-700);
+  }
 }
