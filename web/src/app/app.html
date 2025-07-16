@@ -2,9 +2,13 @@
 
 <main class="main">
   <form [formGroup]="shoppingItemForm" class="form">
-    <input id="name" formControlName="name" placeholder="Name">
-    <input id="description" formControlName="description" placeholder="Description">
-    <input id="price" formControlName="price" placeholder="Price">
+    <input id="name" formControlName="name" placeholder="Name" />
+    <input
+      id="description"
+      formControlName="description"
+      placeholder="Description"
+    />
+    <input id="price" formControlName="price" placeholder="Price" />
 
     <select id="currency" formControlName="currency">
       <option value="USD">$</option>
@@ -14,6 +18,13 @@
 
     <button type="submit">Add</button>
   </form>
+
+  @for (item of items(); track item.id) {
+  <div>
+    {{ item.name }}
+    {{ item.createdAt }}
+  </div>
+  }
 </main>
 
 <router-outlet />

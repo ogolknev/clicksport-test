@@ -4,19 +4,21 @@
   "description": "Backend for ShoppingList app",
   "main": "src/app.ts",
   "scripts": {
-    "dev": "ts-node src/app.ts",
+    "dev": "ts-node src/server.ts",
     "test": "jest"
   },
   "author": "ogolknev",
   "license": "ISC",
   "dependencies": {
     "@libsql/client": "^0.15.9",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "drizzle-orm": "^0.44.3",
     "express": "^5.1.0",
     "zod": "^4.0.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/supertest": "^6.0.3",
