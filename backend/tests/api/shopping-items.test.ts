@@ -39,6 +39,14 @@ describe("ShoppingItems API", () => {
 
       await request(app).delete(`/shopping-items/${resCreate.body.data.id}`);
     });
+
+    it("should return 404", async () => {
+      await request(app).delete(`/shopping-items/${10}`);
+
+      const res = await request(app).get(`/shopping-items/${10}`)
+
+      expect(res.status).toBe(404)
+    })
   });
 
   describe("delete", () => {
