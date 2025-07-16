@@ -13,8 +13,8 @@ export class ShoppingItemsController {
   private service: ShoppingItemsService;
 
   async get(req: Request, res: Response) {
-    const page = Number(req.query.page);
-    const pageSize = Number(req.query.pageSize);
+    const page = parseInt(req.query.page as string) || 1;
+    const pageSize = parseInt(req.query.pageSize as string) || 20;
 
     const result = await this.service.get({
       page,
@@ -34,7 +34,7 @@ export class ShoppingItemsController {
   }
 
   async getOne(req: Request, res: Response) {
-    const id = Number(req.params.id);
+    const id = parseInt(req.params.id);
 
     const result = await this.service.getOne(id);
     const response: APIResponse<ShoppingItem> = { data: result };
@@ -61,10 +61,12 @@ export class ShoppingItemsController {
     res.json(response);
   }
 
-  async delete(req: Request) {
+  async delete(req: Request, res: Response) {
     const id = Number(req.params.id);
 
     await this.service.delete(id);
+
+    res.sendStatus(204)
   }
 
   constructor(service: ShoppingItemsService) {

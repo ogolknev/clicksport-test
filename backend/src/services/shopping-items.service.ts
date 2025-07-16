@@ -21,7 +21,9 @@ export class ShoppingItemsServiceDrizzle implements ShoppingItemsService {
     }
 
     if (inserted.lastInsertRowid > BigInt(Number.MAX_SAFE_INTEGER)) {
-      throw new InternalServerError("inserted.lastInsertRowid > MAX_SAFE_INTEGER");
+      throw new InternalServerError(
+        "inserted.lastInsertRowid > MAX_SAFE_INTEGER"
+      );
     }
     const id = Number(inserted.lastInsertRowid);
 
@@ -68,6 +70,7 @@ export class ShoppingItemsServiceDrizzle implements ShoppingItemsService {
     return item;
   }
   async delete(id: NonNullable<ShoppingItem["id"]>): Promise<void> {
+
     const deleted = await db
       .delete(shoppingItemTable)
       .where(eq(shoppingItemTable.id, id));

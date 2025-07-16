@@ -5,7 +5,7 @@ export const shoppingItemSchema = zod.object({
   name: zod.string().nonempty(),
   description: zod.string().optional(),
   price: zod.number().nonnegative(),
-  currency: zod.enum(["RUB", "USD", "EUR"]),
+  currency: zod.enum(["RUB", "USD", "EUR"]).default('RUB'),
 })
 
 export type ShoppingItemCreate = zod.input<typeof shoppingItemSchema>
