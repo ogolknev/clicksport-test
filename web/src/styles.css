@@ -259,6 +259,12 @@ body {
   color: var(--color-white);
 }
 
+main {
+  width: 80%;
+  max-width: 100rem;
+  margin-inline: auto;
+}
+
 input,
 select {
   box-sizing: border-box;

@@ -1,7 +1,7 @@
 <header class="header">Shopping List</header>
 
 <main class="main">
-  <form [formGroup]="shoppingItemForm" class="form" (ngSubmit)="onSubmit()" >
+  <form [formGroup]="shoppingItemForm" class="form" (ngSubmit)="onSubmit()">
     <input id="name" formControlName="name" placeholder="Name" />
     <input
       id="description"
@@ -19,6 +19,22 @@
     <button type="submit">Add</button>
   </form>
 
+  <div class="pagination">
+    <button (click)="prevPage()">&lt;</button>
+    {{ curPage() + " / " + totalPages() }}
+    <button (click)="nextPage()">&gt;</button>
+  </div>
+
+  @if (errors().length) {
+  <div class="errors">
+    @for (error of errors(); track $index) {
+    <div class="error">{{ error }}</div>
+    }
+  </div>
+  } @else if (status()) {
+  <div class="status">{{ status() }}</div>
+  }
+
   <div class="item-card-container">
     @for (item of items(); track item.id) {
     <div class="item-card">
@@ -27,8 +43,10 @@
 
       <button class="delete" (click)="onDelete(item.id)">Delete</button>
 
+      @if (item.description) {
       <span class="label">Description: </span>
       <span>{{ item.description }}</span>
+      }
 
       <span class="label">Price: </span>
       <span
@@ -45,8 +63,4 @@
     </div>
     }
   </div>
-
-  <div class="pagination"></div>
 </main>
-
-<router-outlet />
